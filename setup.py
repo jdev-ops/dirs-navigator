@@ -23,7 +23,7 @@ setuptools.setup(
     install_requires=install_requires,
     include_package_data=True,
     scripts=[
-        "bin/setup",
+        "bin/setup2",
     ],
     entry_points={
         "console_scripts": [
