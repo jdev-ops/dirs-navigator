@@ -23,7 +23,7 @@ setuptools.setup(
     install_requires=install_requires,
     include_package_data=True,
     scripts=[
-        "bin/ch-d",
+        # "bin/ch-d",
     ],
     entry_points={
         "console_scripts": [
