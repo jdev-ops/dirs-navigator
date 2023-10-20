@@ -23,11 +23,12 @@ setuptools.setup(
     install_requires=install_requires,
     include_package_data=True,
     scripts=[
-        # "bin/sel-env",
+        "bin/ch-d",
     ],
     entry_points={
         "console_scripts": [
             "sel-env=dir_nav.navigator:sel_env",
+            "_choose-destination=dir_nav.navigator:choose_destination",
         ],
     },
 )

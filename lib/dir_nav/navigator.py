@@ -22,15 +22,35 @@ import cattrs
 #     config = decouple_config
 
 import glob
+import sys
 def sel_env():
-    options = glob.glob("~/.navigator")
+    options = glob.glob(f"{os.environ['HOME']}/.navigator/*.yaml")
+    values = {}
+    for o in options:
+        i=o.rfind("/")
+        values[o[i+1:-5]]= o
     my_env = os.environ.copy()
-    my_env["GUM_CHOOSE_HEADER"] = f"Choose an environment:"
+    # my_env["GUM_CHOOSE_HEADER"] = f"Choose an environment:"
+    my_env["GUM_FILTER_PLACEHOLDER"] = f"Choose an environment:"
     result = subprocess.run(
-        ["gum", "choose"] + options, stdout=subprocess.PIPE, text=True, env=my_env
+        ["gum", "filter"], input="\n".join(values.keys()), stdout=subprocess.PIPE, text=True, env=my_env
     )
-    open("~/.navigator/.environment", "w").write(result.stdout.strip())
+    open(f"{os.environ['HOME']}/.navigator/.environment", "w").write(result.stdout.strip())
 
+def choose_destination():
+    return "/home/a/src/a/intelygenz/points-account/"
+    # options = glob.glob(f"{os.environ['HOME']}/.navigator/*.yaml")
+    # values = {}
+    # for o in options:
+    #     i=o.rfind("/")
+    #     values[o[i+1:-5]]= o
+    # my_env = os.environ.copy()
+    # # my_env["GUM_CHOOSE_HEADER"] = f"Choose an environment:"
+    # my_env["GUM_FILTER_PLACEHOLDER"] = f"Choose an environment:"
+    # result = subprocess.run(
+    #     ["gum", "filter"], input="\n".join(values.keys()), stdout=subprocess.PIPE, text=True, env=my_env
+    # )
+    # open(f"{os.environ['HOME']}/.navigator/.environment", "w").write(result.stdout.strip())
 
 def main():
     base_branch = open(".git/devops/base_branch", "r").read().strip()
