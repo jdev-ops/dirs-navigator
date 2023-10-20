@@ -3,9 +3,6 @@ import json
 import subprocess
 import os
 
-import requests
-from requests.auth import HTTPBasicAuth
-
 from slugify import slugify
 
 from pathlib import Path
@@ -13,17 +10,26 @@ from pathlib import Path
 from decouple import config as decouple_config
 from decouple import Config, RepositoryEnv
 
-from git import Repo
 import cattrs
 
-from git_policy import *
+# from git_policy import *
 
-if os.environ.get("CONFIG_PATH"):
-    config = Config(RepositoryEnv(os.environ["CONFIG_PATH"]))
-elif Path(".env.local").is_file():
-    config = Config(RepositoryEnv(".env.local"))
-else:
-    config = decouple_config
+# if os.environ.get("CONFIG_PATH"):
+#     config = Config(RepositoryEnv(os.environ["CONFIG_PATH"]))
+# elif Path(".env.local").is_file():
+#     config = Config(RepositoryEnv(".env.local"))
+# else:
+#     config = decouple_config
+
+import glob
+def sel_env():
+    options = glob.glob("~/.navigator")
+    my_env = os.environ.copy()
+    my_env["GUM_CHOOSE_HEADER"] = f"Choose an environment:"
+    result = subprocess.run(
+        ["gum", "choose"] + options, stdout=subprocess.PIPE, text=True, env=my_env
+    )
+    open("~/.navigator/.environment", "w").write(result.stdout.strip())
 
 
 def main():

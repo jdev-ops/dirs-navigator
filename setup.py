@@ -23,11 +23,11 @@ setuptools.setup(
     install_requires=install_requires,
     include_package_data=True,
     scripts=[
-        "bin/sel-env",
+        # "bin/sel-env",
     ],
     entry_points={
         "console_scripts": [
-            # "branch-setup=git_policy.branch_setup:main",
+            "sel-env=dir_nav.navigator:sel_env",
         ],
     },
 )
