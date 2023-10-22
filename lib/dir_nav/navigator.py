@@ -52,5 +52,8 @@ def choose_destination():
     result = subprocess.run(
         ["gum", "filter"], input="\n".join(values.keys()), stdout=subprocess.PIPE, text=True, env=my_env
     )
-    print(values[result.stdout.strip()])
+    selected_path = values[result.stdout.strip()]
+    if selected_path.startswith("~"):
+        selected_path = selected_path.replace("~", os.environ["HOME"])
+    print(selected_path)
     return 0
