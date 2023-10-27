@@ -27,7 +27,7 @@ setuptools.setup(
     ],
     entry_points={
         "console_scripts": [
-            "sel-env=dir_nav.navigator:sel_env",
+            "senv=dir_nav.navigator:sel_env",
             "_choose-destination=dir_nav.navigator:choose_destination",
         ],
     },
