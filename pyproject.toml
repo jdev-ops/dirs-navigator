@@ -1,0 +1,83 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dirs-navigator"
+dynamic = ["version"]
+description = ''
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "José Albert Cruz Almaguer", email = "jalbertcruz@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "cattrs~=23.2.3",
+  "python-decouple~=3.8",
+  "PyYAML~=6.0.1",
+  "typer~=0.9.0",
+]
+
+[project.urls]
+Documentation = "https://github.com/jdev-ops/dirs-navigator#readme"
+
+[project.scripts]
+senv = "dirs_navigator.navigator:sel_env"
+_choose-destination = "dirs_navigator.navigator:choose_destination"
+_vim-translator = "fzf_utilities._vim_translator:main"
+ripgrep_to_fzf_filter = "fzf_utilities.ripgrep_to_fzf_filter:main"
+
+[tool.hatch.version]
+path = "src/dirs_navigator/__about__.py"
+
+[tool.hatch.envs.default]
+dependencies = [
+  "coverage[toml]>=6.5",
+  "pytest",
+]
+[tool.hatch.envs.default.scripts]
+test = "pytest {args:tests}"
+test-cov = "coverage run -m pytest {args:tests}"
+cov-report = [
+  "- coverage combine",
+  "coverage report",
+]
+cov = [
+  "test-cov",
+  "cov-report",
+]
+
+[[tool.hatch.envs.all.matrix]]
+python = ["3.10", "3.11", "3.12"]
+
+[tool.hatch.envs.types]
+dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/dirs_navigator tests}"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "bin/*",
+]
+include = [
+  "src/",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = [
+  "src/dirs_navigator",
+  "src/fzf_utilities",
+]

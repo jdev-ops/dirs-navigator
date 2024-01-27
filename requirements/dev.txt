@@ -1,2 +1,0 @@
--r common.txt
-black==23.10.0

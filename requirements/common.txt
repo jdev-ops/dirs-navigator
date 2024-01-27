@@ -1,4 +1,0 @@
-python-decouple==3.8
-python-slugify==8.0.1
-cattrs==23.1.2
-PyYAML==6.0.1
