@@ -36,7 +36,6 @@ Documentation = "https://github.com/jdev-ops/dirs-navigator#readme"
 senv = "dirs_navigator.navigator:sel_env"
 _choose-destination = "dirs_navigator.navigator:choose_destination"
 _vim-translator = "fzf_utilities._vim_translator:main"
-ripgrep_to_fzf_filter = "fzf_utilities.ripgrep_to_fzf_filter:main"
 
 [tool.hatch.version]
 path = "src/dirs_navigator/__about__.py"
