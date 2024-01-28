@@ -55,7 +55,7 @@ class RGLine:
     data: Match = field(
         validator=attrs.validators.instance_of(Match)
     )
-    def line(self):
+    def row(self):
         return self.data.line_number
 
     def file(self):
@@ -67,8 +67,6 @@ class RGLine:
     def column(self):
         return self.data.submatches[0].start + 1
 
-    def __str__(self):
-        return f"{self.file()}:{self.line()}:{self.column()}:{self.text()}"
 
 def main():
     lines = sys.stdin.readlines()
@@ -78,9 +76,15 @@ def main():
     for line in lines:
         value = json.loads(line)
         try:
-            line = cattrs.structure(value, RGLine)
-            result.append(str(line))
+            self = cattrs.structure(value, RGLine)
+            # TODO: remove magic numbers
+            row_start = max(self.row() - 3, 1)
+            lines_count = 4
+            result.append(f"{self.file()}:{self.row()}:{self.column()}:{row_start}:{lines_count}:{self.text()}")
         except Exception as e:
             pass
 
     print("\n".join(result))
+
+if __name__ == "__main__":
+    main()

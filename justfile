@@ -4,8 +4,6 @@ set positional-arguments
 set dotenv-load
 set export
 
-default: req
-
 shfmt:
 	shfmt -i 2 -l -w bin/*
 
