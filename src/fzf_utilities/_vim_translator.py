@@ -2,6 +2,7 @@
 
 import sys
 
+
 def main():
     lines = sys.stdin.readlines()
     if len(lines) == 0:

@@ -20,48 +20,31 @@ class MatchType(Enum):
 
 @define
 class Path:
-    text: str = field(
-        validator=attrs.validators.instance_of(str)
-    )
+    text: str = field(validator=attrs.validators.instance_of(str))
 
 
 @define
 class Line:
-    text: str = field(
-        validator=attrs.validators.instance_of(str)
-    )
+    text: str = field(validator=attrs.validators.instance_of(str))
 
 
 @define
 class Submatch:
-    start: int = field(
-        validator=attrs.validators.instance_of(int)
-    )
+    start: int = field(validator=attrs.validators.instance_of(int))
 
 
 @define
 class Match:
-    path: Path = field(
-        validator=attrs.validators.instance_of(Path)
-    )
-    lines: Line = field(
-        validator=attrs.validators.instance_of(Line)
-    )
-    line_number: int = field(
-        validator=attrs.validators.instance_of(int)
-    )
-    submatches: list[Submatch] = field(
-    )
+    path: Path = field(validator=attrs.validators.instance_of(Path))
+    lines: Line = field(validator=attrs.validators.instance_of(Line))
+    line_number: int = field(validator=attrs.validators.instance_of(int))
+    submatches: list[Submatch] = field()
 
 
 @define
 class RGLine:
-    type: MatchType = field(
-        validator=attrs.validators.instance_of(MatchType)
-    )
-    data: Match = field(
-        validator=attrs.validators.instance_of(Match)
-    )
+    type: MatchType = field(validator=attrs.validators.instance_of(MatchType))
+    data: Match = field(validator=attrs.validators.instance_of(Match))
 
     def row(self):
         return self.data.line_number
@@ -77,8 +60,8 @@ class RGLine:
 
 
 def main(
-        rows_before: Annotated[int, typer.Option("--rb")],
-        lines_count: Annotated[int, typer.Option("--lc")],
+    rows_before: Annotated[int, typer.Option("--rb")],
+    lines_count: Annotated[int, typer.Option("--lc")],
 ):
     lines = sys.stdin.readlines()
     if len(lines) == 0:
@@ -90,7 +73,9 @@ def main(
             self = cattrs.structure(value, RGLine)
             # TODO: remove magic numbers
             row_start = max(self.row() - rows_before, 1)
-            result.append(f"{self.file()}:{self.row()}:{self.column()}:{row_start}:{lines_count}:{self.text()}")
+            result.append(
+                f"{self.file()}:{self.row()}:{self.column()}:{row_start}:{lines_count}:{self.text()}"
+            )
         except Exception as e:
             pass
 
