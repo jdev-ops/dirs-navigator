@@ -4,8 +4,8 @@ set positional-arguments
 set dotenv-load
 set export
 
-shfmt:
-	shfmt -i 2 -l -w bin/*
+#shfmt:
+#	shfmt -i 2 -l -w bin/*
 
 pyfmt:
 	black src/

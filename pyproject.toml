@@ -14,27 +14,27 @@ authors = [
   { name = "José Albert Cruz Almaguer", email = "jalbertcruz@gmail.com" },
 ]
 classifiers = [
-  "Development Status :: 4 - Beta",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: Implementation :: CPython",
-  "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
-  "cattrs~=23.2.3",
+  "cattrs~=24.1.2",
   "python-decouple~=3.8",
-  "PyYAML~=6.0.1",
-  "typer~=0.9.0",
+  "PyYAML~=6.0.2",
+  "typer~=0.15.1",
 ]
 
 [project.urls]
 Documentation = "https://github.com/jdev-ops/dirs-navigator#readme"
 
 [project.scripts]
-senv = "dirs_navigator.navigator:sel_env"
-senv2 = "dirs_navigator.navigator:sel_env2"
+_senv = "dirs_navigator.navigator:sel_env"
+_senv2 = "dirs_navigator.navigator:sel_env2"
+_projects_names = "dirs_navigator.navigator:projects_names"
+_project_path = "dirs_navigator.project_path:main"
 _choose-destination = "dirs_navigator.navigator:choose_destination"
 _vim-translator = "fzf_utilities._vim_translator:main"
 
