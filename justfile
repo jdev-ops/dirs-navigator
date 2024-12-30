@@ -13,3 +13,6 @@ pyfmt:
 publish:
     hatch build
     hatch publish -r http://localhost:3141/testuser/dev
+
+build:
+    hatch build

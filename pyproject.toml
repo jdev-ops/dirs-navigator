@@ -7,17 +7,14 @@ name = "dirs-navigator"
 dynamic = ["version"]
 description = ''
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.13"
 license = "MIT"
 keywords = []
 authors = [
   { name = "José Albert Cruz Almaguer", email = "jalbertcruz@gmail.com" },
 ]
 classifiers = [
-  "Programming Language :: Python",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: Implementation :: CPython",
 ]
 dependencies = [
@@ -25,17 +22,28 @@ dependencies = [
   "python-decouple~=3.8",
   "PyYAML~=6.0.2",
   "typer~=0.15.1",
+  "rich~=13.9.4",
+  "more-itertools~=10.5.0",
+]
+
+[dependency-groups]
+dev = [
+  "basedpyright~=1.23.1",
+  "black~=24.10.0",
+  "pylint~=3.3.3",
+  "coverage[toml]>=7.6.10",
+  "pytest>=8.3.4",
 ]
 
 [project.urls]
 Documentation = "https://github.com/jdev-ops/dirs-navigator#readme"
 
 [project.scripts]
-_senv = "dirs_navigator.navigator:sel_env"
-_senv2 = "dirs_navigator.navigator:sel_env2"
+senv = "dirs_navigator.navigator:sel_env"
+_choose_project = "dirs_navigator.navigator:choose_project"
 _projects_names = "dirs_navigator.navigator:projects_names"
 _project_path = "dirs_navigator.project_path:main"
-_choose-destination = "dirs_navigator.navigator:choose_destination"
+#_choose-destination = "dirs_navigator.navigator:choose_destination"
 _vim-translator = "fzf_utilities._vim_translator:main"
 
 [tool.hatch.version]
@@ -43,7 +51,7 @@ path = "src/dirs_navigator/__about__.py"
 
 [tool.hatch.envs.default]
 dependencies = [
-  "coverage[toml]>=6.5",
+  "coverage[toml]",
   "pytest",
 ]
 [tool.hatch.envs.default.scripts]
@@ -59,7 +67,7 @@ cov = [
 ]
 
 [[tool.hatch.envs.all.matrix]]
-python = ["3.10", "3.11", "3.12"]
+python = ["3.12", "3.13"]
 
 [tool.hatch.envs.types]
 dependencies = [

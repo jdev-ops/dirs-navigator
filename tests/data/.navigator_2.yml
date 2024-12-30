@@ -1,0 +1,11 @@
+expansions:
+  # take all git repositories in this scope
+  - path: PHALP-deps
+    level: 2
+    tag: phalp-deps
+# all but the exclusions
+excludes:
+  - base
+  - pypi
+
+tag: nav2

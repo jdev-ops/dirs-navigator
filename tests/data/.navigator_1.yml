@@ -1,0 +1,9 @@
+# the tree is created this way
+base-paths:
+  - git-dependencies2
+# only this
+includes:
+  - demos
+  - ds-trinity
+
+tag: nav1

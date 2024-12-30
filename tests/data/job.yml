@@ -1,0 +1,7 @@
+
+git-working-trees:
+  - path: ~/src/a/intelygenz/src/trinity/base
+    tag: base
+
+base-paths:
+  - ~/src/a/intelygenz/src
