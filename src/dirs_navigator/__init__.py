@@ -1,10 +1,13 @@
 from attrs import define, field
 import cattrs
 from pathlib import Path
+from collections.abc import Iterable
+
 
 @define
 class AstNode:
     pass
+
 
 @define
 class AstBasic(AstNode):
@@ -36,7 +39,7 @@ class RootGroup:
     # git_working_trees: list[str] = field(metadata={"alias": "git-working-trees"})
     # base_paths: list[str] = field(metadata={"alias": "base-paths"})
     git_working_trees: list[WorkTree] | None = field()
-    base_paths: list[str] | None = field()
+    base_paths: Iterable[str] | None = field()
 
 
 @define

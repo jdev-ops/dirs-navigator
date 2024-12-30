@@ -50,28 +50,23 @@ def normalize_path(path: str) -> str:
 def create_ast(rg: RootGroup) -> list[AstNode]:
     ast_nodes: list[AstNode] = []
     nodes: list[Node] = []
-    if rg.git_working_trees:
-        git_working_trees: list[WorkTree] = rg.git_working_trees
-        res = []
-        for wt in git_working_trees:
-            res.append(WorkTree(path=normalize_path(wt.path), tag=wt.tag))
-        rg.git_working_trees = res
-        for wt in rg.git_working_trees:
-            ast_nodes.append(AstWorkTree(cwd=Path(wt.path), tag=wt.tag))
-    if rg.base_paths:
-        base_paths = rg.base_paths
-        res = []
-        for wt in base_paths:
-            res.append(normalize_path(wt))
-        rg.base_paths = res
-    if rg.base_paths:
-        for bp in rg.base_paths:
-            nav_path = Path(bp)
-            nav_file = nav_path / ".navigator.yml"
-            node = deserialize(nav_file, Node)
-            if node:
-                node.cwd = nav_path
-                nodes.append(node)
+    match rg:
+        case RootGroup(git_working_trees=[_, *_] as git_working_trees):
+            for wt in git_working_trees:
+                ast_nodes.append(
+                    AstWorkTree(cwd=Path(normalize_path(wt.path)), tag=wt.tag)
+                )
+
+    match rg:
+        case RootGroup(base_paths=[_, *_] as base_paths):
+            rg.base_paths = map(lambda e: normalize_path(e), base_paths)
+            for bp in rg.base_paths:
+                nav_path = Path(bp)
+                nav_file = nav_path / ".navigator.yml"
+                node = deserialize(nav_file, Node)
+                if node:
+                    node.cwd = nav_path
+                    nodes.append(node)
 
     np, nodes = split_nodes(nodes)
     while np and np.base_paths:
@@ -87,13 +82,14 @@ def create_ast(rg: RootGroup) -> list[AstNode]:
         np, nodes = split_nodes(nodes)
 
     for n in nodes:
-        if n.expansions:
-            for ex in n.expansions:
-                ast_nodes.append(
-                    AstExpansion(
-                        cwd=n.cwd / ex.path, level=ex.level, tag=f"{n.tag}:{ex.tag}"
+        match n:
+            case Node(expansions=[_, *_] as expansions):
+                for ex in expansions:
+                    ast_nodes.append(
+                        AstExpansion(
+                            cwd=n.cwd / ex.path, level=ex.level, tag=f"{n.tag}:{ex.tag}"
+                        )
                     )
-                )
 
     for n in nodes:
         # files = [f for f in glob.glob(os.path.join(n.cwd, "*")) if Path(f).is_dir()]
@@ -103,27 +99,30 @@ def create_ast(rg: RootGroup) -> list[AstNode]:
             if f.is_dir() and not f.parts[-1].startswith(".")
         ]
         parts = []
-        if n.expansions:
-            for e in n.expansions:
-                parts.append(Path(e.path).parts[0])
-        if n.excludes:
-            excludes = [f"{n.cwd}/{ex}" for ex in n.excludes]
-            for f in files:
-                checked_parts = map(lambda p: f.endswith(p), parts)
-                if any(checked_parts):
-                    excludes.append(f)
-            files = set(files) - set(excludes)
-            ast_nodes.append(AstBasic(n.tag, [Path(f) for f in files]))
-        elif n.includes:
-            excludes = []
-            files = [f"{n.cwd}/{f}" for f in n.includes]
-            for f in files:
-                checked_parts = map(lambda p: f.endswith(p), parts)
-                if any(checked_parts):
-                    excludes.append(f)
-            files = set(files) - set(excludes)
-            # remove the expansions
-            ast_nodes.append(AstBasic(n.tag, [Path(f) for f in files]))
+
+        match n:
+            case Node(expansions=[_, *_] as expansions):
+                for e in expansions:
+                    parts.append(Path(e.path).parts[0])
+        match n:
+            case Node(excludes=[_, *_] as excludes):
+                excludes = [f"{n.cwd}/{ex}" for ex in excludes]
+                for f in files:
+                    checked_parts = map(lambda p: f.endswith(p), parts)
+                    if any(checked_parts):
+                        excludes.append(f)
+                files = set(files) - set(excludes)
+                ast_nodes.append(AstBasic(n.tag, [Path(f) for f in files]))
+            case Node(includes=[_, *_] as includes):
+                excludes = []
+                files = [f"{n.cwd}/{f}" for f in includes]
+                for f in files:
+                    checked_parts = map(lambda p: f.endswith(p), parts)
+                    if any(checked_parts):
+                        excludes.append(f)
+                files = set(files) - set(excludes)
+                # remove the expansions
+                ast_nodes.append(AstBasic(n.tag, [Path(f) for f in files]))
 
     return ast_nodes
 
