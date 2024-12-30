@@ -11,8 +11,8 @@ pyfmt:
 	black src/
 
 publish:
-    hatch build
+    hatch build --clean
     hatch publish -r http://localhost:3141/testuser/dev
 
 build:
-    hatch build
+    hatch build --clean

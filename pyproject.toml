@@ -20,8 +20,8 @@ classifiers = [
 dependencies = [
   "cattrs~=24.1.2",
   "python-decouple~=3.8",
-  "PyYAML~=6.0.2",
   "typer~=0.15.1",
+  "PyYAML~=6.0.2",
   "rich~=13.9.4",
   "more-itertools~=10.5.0",
 ]
@@ -40,9 +40,9 @@ Documentation = "https://github.com/jdev-ops/dirs-navigator#readme"
 
 [project.scripts]
 senv = "dirs_navigator.navigator:sel_env"
-_choose_project = "dirs_navigator.navigator:choose_project"
-_projects_names = "dirs_navigator.navigator:projects_names"
-_project_path = "dirs_navigator.project_path:main"
+_choose-project = "dirs_navigator.navigator:choose_project"
+_projects-names = "dirs_navigator.navigator:projects_names"
+_project-path = "dirs_navigator.project_path:main"
 #_choose-destination = "dirs_navigator.navigator:choose_destination"
 _vim-translator = "fzf_utilities._vim_translator:main"
 
@@ -67,7 +67,7 @@ cov = [
 ]
 
 [[tool.hatch.envs.all.matrix]]
-python = ["3.12", "3.13"]
+python = ["3.13"]
 
 [tool.hatch.envs.types]
 dependencies = [
