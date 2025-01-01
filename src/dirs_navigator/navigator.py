@@ -63,7 +63,7 @@ def create_ast(rg: RootGroup) -> list[AstNode]:
             for bp in rg.base_paths:
                 nav_path = Path(bp)
                 nav_file = nav_path / ".navigator.yml"
-                node = deserialize(nav_file, Node)
+                node = deserialize(nav_file, Node, locals())
                 if node:
                     node.cwd = nav_path
                     nodes.append(node)
@@ -73,7 +73,7 @@ def create_ast(rg: RootGroup) -> list[AstNode]:
         for bp in np.base_paths:
             nav_path = np.cwd / Path(bp)
             nav_file = nav_path / ".navigator.yml"
-            node = deserialize(nav_file, Node)
+            node = deserialize(nav_file, Node, locals())
             if node:
                 node.cwd = nav_path
                 nodes.append(node)
@@ -219,29 +219,31 @@ def get_home_path() -> Path:
     return Path(f"{os.environ['HOME']}")
 
 
-def read_all_content(path: Path) -> str | None:
+def read_all_content(path: Path, ctx: dict[str, any]) -> str | None:
     try:
         environment = open(path)
         return environment.read()
     except:
         logging.error(traceback.format_exc())
+        logging.error(f"Ctx: {ctx}")
         return None
 
 
-def deserialize[T](path: Path, clazz: T) -> T | None:
+def deserialize[T](path: Path, clazz: T, ctx: dict[str, any]) -> T | None:
     try:
         content = load(open(path), Loader=Loader)
         return converter.structure(content, clazz)
     except:
         logging.error(traceback.format_exc())
+        logging.error(f"Ctx: {ctx}")
         return None
 
 
 def load_projects() -> dict[str, str]:
-    env_file = read_all_content(get_home_path() / ".navigator/.environment")
+    env_file = read_all_content(get_home_path() / ".navigator/.environment", locals())
     if env_file:
         nav_file = get_home_path() / f".navigator/entries/{env_file}.yml"
-        root = deserialize(nav_file, RootGroup)
+        root = deserialize(nav_file, RootGroup, locals())
         if root:
             ast_list = create_ast(root)
             # print(ast_list)
