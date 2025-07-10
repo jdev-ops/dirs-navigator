@@ -7,7 +7,7 @@ name = "dirs-navigator"
 dynamic = ["version"]
 description = ''
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 license = "MIT"
 keywords = []
 authors = [
@@ -28,9 +28,6 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-  "basedpyright~=1.23.1",
-  "black~=24.10.0",
-  "pylint~=3.3.3",
   "coverage[toml]>=7.6.10",
   "pytest>=8.3.4",
 ]
@@ -54,6 +51,7 @@ dependencies = [
   "coverage[toml]",
   "pytest",
 ]
+
 [tool.hatch.envs.default.scripts]
 test = "pytest {args:tests}"
 test-cov = "coverage run -m pytest {args:tests}"
@@ -73,6 +71,7 @@ python = ["3.13"]
 dependencies = [
   "mypy>=1.0.0",
 ]
+
 [tool.hatch.envs.types.scripts]
 check = "mypy --install-types --non-interactive {args:src/dirs_navigator tests}"
 
